@@ -161,7 +161,9 @@ pub struct Charge {
     pub amount_refunded: u64,
     pub application: Option<String>,
     pub application_fee: Option<String>,
-    pub balance_transaction: String,
+    // The balance_transaction field can be null if the charge is not captured or the charge was declined
+    // https://groups.google.com/a/lists.stripe.com/forum/#!topic/api-discuss/1YqRvpVloWE
+    pub balance_transaction: Option<String>,
     pub captured: bool,
     pub created: Timestamp,
     pub currency: Currency,
