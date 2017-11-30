@@ -1,4 +1,9 @@
+use std::collections::HashMap;
+
 use serde_json as json;
+
+use error::Error;
+use client::Client;
 use params::{List, Timestamp};
 use resources::{Currency, Source};
 
@@ -18,10 +23,17 @@ pub struct FeeDetails {
 #[derive(Debug, Deserialize)]
 pub struct Balance {
     pub object: String,
-    pub available: Vec<json::Value>,
-    pub connect_reserved: Vec<json::Value>,
+    pub available: Vec<BalanceCurrency>,
+    pub connect_reserved: Option<Vec<json::Value>>,
     pub livemode: bool,
-    pub pending: Vec<json::Value>,
+    pub pending: Vec<BalanceCurrency>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct BalanceCurrency {
+    pub currency: String,
+    pub amount: u64,
+    pub source_types: HashMap<String, u64>,
 }
 
 /// The resource representing a Stripe balance transaction.
@@ -43,4 +55,14 @@ pub struct BalanceTransaction {
     pub status: String,
     #[serde(rename = "type")]
     pub transaction_type: String,
+}
+
+impl Balance {
+    /// Retrieves the balance of the current account
+    ///
+    /// For more details see https://stripe.com/docs/api#retrieve_balance.
+    pub fn retrieve(client: &Client) -> Result<Balance, Error> {
+        client.get(&format!("/balance"))
+    }
+
 }
