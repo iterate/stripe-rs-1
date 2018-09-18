@@ -1,7 +1,7 @@
 use client::Client;
 use error::Error;
 use params::{List, Metadata, Timestamp};
-use resources::BankAccount;
+use resources::{BankAccount, BankAccountParams};
 use serde_json as json;
 
 #[derive(Debug, Default, Deserialize, Serialize)]
@@ -32,6 +32,29 @@ pub struct TOSAcceptanceDetails {
     pub user_agent: Option<String>,
 }
 
+#[derive(Debug, Default, Deserialize, Serialize)]
+pub struct DateOfBirthDetails {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub day: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub month: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub year: Option<i32>,
+}
+
+#[derive(Debug, Default, Deserialize, Serialize)]
+pub struct LegalEntityDetails {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub dob: Option<DateOfBirthDetails>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub last_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub first_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "type")]
+    pub entity_type: Option<&'static str>, // (individual, person)
+}
+
 /// The set of parameters that can be used when creating an account for users.
 ///
 /// For more details see https://stripe.com/docs/api#create_account.
@@ -45,11 +68,13 @@ pub struct AccountParams<'a> {
     #[serde(rename = "type")]
     pub account_type: Option<&'static str>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub external_account: Option<&'a str>, // (required if account type is standard)
+    pub external_account: Option<BankAccountParams<'a>>, // (required if account type is standard)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub metadata: Option<Metadata>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub tos_acceptance : Option<TOSAcceptanceDetails>, // (required if account type is standard)
+    pub tos_acceptance: Option<TOSAcceptanceDetails>, // (required if account type is standard)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub legal_entity: Option<LegalEntityDetails>, // (required if account type is standard)
 }
 
 /// The resource representing a Stripe account.
@@ -107,5 +132,4 @@ impl Account {
     pub fn update(client: &Client, account_id: &str, params: AccountParams) -> Result<Account, Error> {
         client.post(&format!("/accounts/{}", account_id), params)
     }
-
 }
