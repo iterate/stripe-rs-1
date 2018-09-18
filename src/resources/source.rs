@@ -129,4 +129,8 @@ impl Source {
     pub fn update(client: &Client, source_id: &str, params: SourceParams) -> Result<Source, Error> {
         client.post(&format!("/source/{}", source_id), params)
     }
+
+    pub fn delete(client: &Client, customer_id: &str, source_id: &str) -> Result<Source, Error> {
+        client.delete(&format!("/customers/{}/sources/{}", customer_id, source_id))
+    }
 }
