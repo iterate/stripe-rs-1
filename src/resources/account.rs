@@ -77,6 +77,18 @@ pub struct AccountParams<'a> {
     pub legal_entity: Option<LegalEntityDetails>, // (required if account type is standard)
 }
 
+#[derive(Debug, Deserialize)]
+pub struct DateOfBirth {
+    pub day: Option<i32>,
+    pub month: Option<i32>,
+    pub year: Option<i32>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct LegalEntity {
+    pub dob: Option<DateOfBirth>,
+}
+
 /// The resource representing a Stripe account.
 ///
 /// For more details see https://stripe.com/docs/api#account.
@@ -95,7 +107,7 @@ pub struct Account {
     pub display_name: Option<String>,
     pub email: String,
     pub external_accounts: List<BankAccount>,
-    pub legal_entity: Option<json::Value>,
+    pub legal_entity: Option<LegalEntity>,
     pub metadata: Metadata,
     pub payout_schedule: Option<PayoutScheduleDetails>,
     pub payout_statement_descriptor: Option<String>,
