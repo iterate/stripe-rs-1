@@ -15,7 +15,8 @@ pub struct BankAccountParams<'a> {
     pub account_holder_type: Option<&'static str>, // (individual, company)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub routing_number: Option<&'static str>,
-    pub account_number: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub account_number: Option<&'static str>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub default_for_currency: Option<&'static str>,
     #[serde(skip_serializing_if = "Option::is_none")]
