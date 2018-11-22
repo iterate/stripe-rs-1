@@ -113,7 +113,7 @@ pub struct Account {
     pub payout_statement_descriptor: Option<String>,
     pub payouts_enabled: bool,
     pub product_description: Option<String>,
-    pub statement_descriptor: String,
+    pub statement_descriptor: Option<String>,
     pub support_email: Option<String>,
     pub support_phone: Option<String>,
     pub timezone: String,
