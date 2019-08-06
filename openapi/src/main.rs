@@ -726,7 +726,7 @@ fn gen_impl_object(meta: &Metadata, object: &str) -> String {
             let required = param["required"].as_bool() == Some(true);
             match param_name {
                 // TODO: Handle these unusual params
-                "bank_account" | "card" | "destination" | "product" => continue,
+                "bank_account" | "card" | "product" => continue,
 
                 "metadata" => {
                     print_doc(&mut out);

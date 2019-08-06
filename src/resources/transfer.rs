@@ -3,7 +3,7 @@
 // ======================================
 
 use crate::config::{Client, Response};
-use crate::ids::{ChargeId, TransferId};
+use crate::ids::{ChargeId, DestinationPaymentId, TransferId};
 use crate::params::{Expand, Expandable, List, Metadata, Object, RangeQuery, Timestamp};
 use crate::resources::{Account, BalanceTransaction, Charge, Currency, TransferReversal};
 use serde_derive::{Deserialize, Serialize};
@@ -46,7 +46,7 @@ pub struct Transfer {
 
     /// If the destination is a Stripe account, this will be the ID of the payment that the destination account received for the transfer.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub destination_payment: Option<Expandable<Charge>>,
+    pub destination_payment: Option<DestinationPaymentId>,
 
     /// Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     pub livemode: bool,
@@ -136,6 +136,8 @@ pub struct CreateTransfer<'a> {
     /// 3-letter [ISO code for currency](https://stripe.com/docs/payouts).
     pub currency: Currency,
 
+    pub destination: &'a str,
+
     /// An arbitrary string attached to the object.
     ///
     /// Often useful for displaying to users.
@@ -176,10 +178,11 @@ pub struct CreateTransfer<'a> {
 }
 
 impl<'a> CreateTransfer<'a> {
-    pub fn new(amount: i64, currency: Currency) -> Self {
+    pub fn new(amount: i64, currency: Currency, destination: &'a str) -> Self {
         CreateTransfer {
             amount,
             currency,
+            destination,
             description: Default::default(),
             expand: Default::default(),
             metadata: Default::default(),
