@@ -2,7 +2,8 @@
 // This file was automatically generated.
 // ======================================
 
-use crate::params::Object;
+use crate::config::{Client, Response};
+use crate::params::{Expand, Object};
 use crate::resources::Currency;
 use serde_derive::{Deserialize, Serialize};
 
@@ -27,6 +28,12 @@ pub struct Balance {
     ///
     /// The pending balance for each currency, and for each payment type, can be found in the `source_types` property.
     pub pending: Vec<BalanceAmount>,
+}
+
+impl Balance {
+    pub fn retrieve(client: &Client, expand: &[&str]) -> Response<Balance> {
+        client.get_query(&"/balance", &Expand { expand })
+    }
 }
 
 impl Object for Balance {

@@ -1,7 +1,8 @@
 use crate::config::{Client, Response};
 use crate::ids::{BalanceTransactionId, BalanceTransactionSourceId};
-use crate::params::Object;
-use crate::resources::{BalanceTransaction, BalanceTransactionSource};
+use crate::params::{List, Object};
+use crate::resources::{BalanceTransaction, BalanceTransactionSource, BalanceTransactionType};
+use serde_derive::{Deserialize, Serialize};
 
 impl BalanceTransaction {
     /// Retrieves the balance transaction with the given ID.
@@ -10,6 +11,21 @@ impl BalanceTransaction {
     pub fn retrieve(client: &Client, id: &BalanceTransactionId) -> Response<BalanceTransaction> {
         client.get(&format!("/balance/history/{}", id))
     }
+
+    pub fn list(
+        client: &Client,
+        params: ListBalanceTransactions,
+    ) -> Response<List<BalanceTransaction>> {
+        client.get_query("/balance/history", &params)
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct ListBalanceTransactions {
+    pub limit: Option<u64>,
+
+    #[serde(rename = "type")]
+    pub type_: BalanceTransactionType,
 }
 
 impl Object for BalanceTransactionSource {
