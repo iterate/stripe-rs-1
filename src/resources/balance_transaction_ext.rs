@@ -1,6 +1,6 @@
 use crate::config::{Client, Response};
 use crate::ids::{BalanceTransactionId, BalanceTransactionSourceId};
-use crate::params::{List, Object};
+use crate::params::{List, Object, RangeQuery, Timestamp};
 use crate::resources::{BalanceTransaction, BalanceTransactionSource, BalanceTransactionType};
 use serde_derive::{Deserialize, Serialize};
 
@@ -22,7 +22,9 @@ impl BalanceTransaction {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ListBalanceTransactions {
+    pub created: Option<RangeQuery<Timestamp>>,
     pub limit: Option<u64>,
+    pub starting_after: Option<BalanceTransactionId>,
 
     #[serde(rename = "type")]
     pub type_: BalanceTransactionType,
