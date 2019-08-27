@@ -3,7 +3,7 @@ use crate::ids::{CustomerId, PaymentIntentId};
 use crate::params::{Expand, Expandable, List, Metadata, Object, RangeQuery, Timestamp};
 use crate::resources::{
     Account, Application, Charge, Currency, Customer, Invoice, PaymentMethod, PaymentSource,
-    Review, Shipping,
+    Review, Shipping, TransferDataParams,
 };
 use serde_derive::{Deserialize, Serialize};
 
@@ -390,7 +390,7 @@ pub struct PaymentIntentCreateParams<'a> {
     pub confirm: Option<bool>, // TODO: Is this the correct type?
 
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub customer: Option<&'a str>,
+    pub customer: Option<CustomerId>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<&'a str>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -410,7 +410,7 @@ pub struct PaymentIntentCreateParams<'a> {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub statement_descriptor: Option<&'a str>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub transfer_data: Option<TransferData>,
+    pub transfer_data: Option<TransferDataParams>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub transfer_group: Option<&'a str>,
 }
