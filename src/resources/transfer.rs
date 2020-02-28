@@ -137,6 +137,8 @@ pub struct CreateTransfer<'a> {
     /// 3-letter [ISO code for currency](https://stripe.com/docs/payouts).
     pub currency: Currency,
 
+    pub destination: &'a str,
+
     /// An arbitrary string attached to the object.
     ///
     /// Often useful for displaying to users.
@@ -177,10 +179,11 @@ pub struct CreateTransfer<'a> {
 }
 
 impl<'a> CreateTransfer<'a> {
-    pub fn new(currency: Currency) -> Self {
+    pub fn new(currency: Currency, destination: &'a str) -> Self {
         CreateTransfer {
             amount: Default::default(),
             currency,
+            destination,
             description: Default::default(),
             expand: Default::default(),
             metadata: Default::default(),
