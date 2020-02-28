@@ -6,7 +6,7 @@ use crate::config::{Client, Response};
 use crate::ids::AccountId;
 use crate::params::{Deleted, Expand, Expandable, List, Metadata, Object, RangeQuery, Timestamp};
 use crate::resources::{
-    Address, BankAccount, BusinessType, Card, Currency, DelayDays, Dob, File, Person, Weekday,
+    Address, BankAccount, BankAccountParams, BusinessType, Card, Currency, DelayDays, Dob, File, Person, Weekday,
 };
 use serde_derive::{Deserialize, Serialize};
 
@@ -485,6 +485,9 @@ pub struct CreateAccount<'a> {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub account_token: Option<&'a str>,
 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub bank_account: Option<BankAccountParams<'a>>,
+
     /// Non-essential business information about the account.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub business_profile: Option<BusinessProfile>,
@@ -571,6 +574,7 @@ impl<'a> CreateAccount<'a> {
     pub fn new() -> Self {
         CreateAccount {
             account_token: Default::default(),
+            bank_account: Default::default(),
             business_profile: Default::default(),
             business_type: Default::default(),
             company: Default::default(),
@@ -638,6 +642,10 @@ pub struct UpdateAccount<'a> {
     /// An [account token](https://stripe.com/docs/api#create_account_token), used to securely provide details to the account.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub account_token: Option<&'a str>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub bank_account: Option<BankAccountParams<'a>>,
+
 
     /// Non-essential business information about the account.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -712,6 +720,7 @@ impl<'a> UpdateAccount<'a> {
     pub fn new() -> Self {
         UpdateAccount {
             account_token: Default::default(),
+            bank_account: Default::default(),
             business_profile: Default::default(),
             business_type: Default::default(),
             company: Default::default(),
