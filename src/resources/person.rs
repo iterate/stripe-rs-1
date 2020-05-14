@@ -189,20 +189,20 @@ pub struct PersonRequirements {
     /// Fields that need to be collected to keep the person's account enabled.
     ///
     /// If not collected by the account's `current_deadline`, these fields appear in `past_due` as well, and the account is disabled.
-    pub currently_due: Vec<String>,
+    pub currently_due: Option<Vec<String>>,
 
     /// Fields that need to be collected assuming all volume thresholds are reached.
     ///
     /// As fields are needed, they are moved to `currently_due` and the account's `current_deadline` is set.
-    pub eventually_due: Vec<String>,
+    pub eventually_due: Option<Vec<String>>,
 
     /// Fields that weren't collected by the account's `current_deadline`.
     ///
     /// These fields need to be collected to enable payouts for the person's account.
-    pub past_due: Vec<String>,
+    pub past_due: Option<Vec<String>>,
 
     /// Additional fields that may be required depending on the results of verification or review for provided requirements.
     ///
     /// If any of these fields become required, they appear in `currently_due` or `past_due`.
-    pub pending_verification: Vec<String>,
+    pub pending_verification: Option<Vec<String>>,
 }
