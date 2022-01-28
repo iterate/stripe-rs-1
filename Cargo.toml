@@ -25,7 +25,7 @@ edition = "2018"
 travis-ci = {repository = "wyyerd/stripe-rs"}
 
 [lib]
-name = "stripe"
+name = "stripe_legacy"
 
 [features]
 default = ["full", "webhook-events", "default-tls"]
