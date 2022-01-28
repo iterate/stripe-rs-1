@@ -2,7 +2,8 @@
 // This file was automatically generated.
 // ======================================
 
-use crate::params::Object;
+use crate::config::{Client, Response};
+use crate::params::{Expand, Object};
 use crate::resources::Currency;
 use serde_derive::{Deserialize, Serialize};
 
@@ -37,6 +38,9 @@ impl Object for Balance {
     fn id(&self) -> Self::Id {}
     fn object(&self) -> &'static str {
         "balance"
+    }
+    pub fn retrieve(client: &Client, expand: &[&str]) -> Response<Balance> {
+        client.get_query(&"/balance", &Expand { expand })
     }
 }
 
